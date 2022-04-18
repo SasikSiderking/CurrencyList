@@ -15,15 +15,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private ArrayList<Currency> currencies;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Currency> currencies){
+    private static RecyclerViewAdapter instance;
+
+    private RecyclerViewAdapter(Context context, ArrayList<Currency> currencies){
         this.context = context;
         this.currencies = currencies;
+    }
+
+    public static RecyclerViewAdapter getInstance(Context context, ArrayList<Currency> currencies){
+        if (instance == null){
+            instance = new RecyclerViewAdapter(context, currencies);
+        }
+        return instance;
     }
 
     @NonNull
     @Override
     public CurrencyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.currency_item,parent,false);
+        System.out.println("!!!");
+        System.out.println(view.findViewById(R.id.charCodeView));
         return new CurrencyViewHolder(view);
     }
 

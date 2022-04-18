@@ -15,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -39,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "https://www.cbr-xml-daily.ru/daily_json.js";
         getCurrencies(url);
-
-
     }
 
     private void getCurrencies(String url) {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     Currency currency = new Currency(charCode, nominal, name, value, previous);
                     currencies.add(currency);
                 }
-                recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, currencies);
+                recyclerViewAdapter = RecyclerViewAdapter.getInstance(MainActivity.this, currencies);
                 recyclerView.setAdapter(recyclerViewAdapter);
             } catch (JSONException jsonException) {
                 jsonException.printStackTrace();
