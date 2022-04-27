@@ -15,8 +15,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 Iterator<String> x = valute.keys();
 
                 while (x.hasNext()) {
-                    String key = (String) x.next();
+                    String key = x.next();
                     JSONObject jsonCurrency = valute.getJSONObject(key);
                     String charCode = jsonCurrency.getString("CharCode");
                     String nominal = jsonCurrency.getString("Nominal");
