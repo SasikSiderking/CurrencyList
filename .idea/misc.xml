@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/CurrencyList/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/CurrencyList/app/src/main/res/drawable/ic_calculator.xml" value="0.2045" />
+        <entry key="..\:/CurrencyList/app/src/main/res/drawable/ic_gear.xml" value="0.2045" />
+        <entry key="..\:/CurrencyList/app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="..\:/CurrencyList/app/src/main/res/layout/currency_item.xml" value="0.196875" />
         <entry key="..\:/CurrencyList/app/src/main/res/layout/row.xml" value="0.196875" />
       </map>
