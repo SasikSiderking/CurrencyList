@@ -1,6 +1,7 @@
 package com.example.currencylist;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "https://www.cbr-xml-daily.ru/daily_json.js";
 
+        View overlay = findViewById(R.id.mainPage);
+        overlay.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+
         currencyAppDatabase = Room.databaseBuilder(getApplicationContext(), CurrencyAppDatabase.class, "currencyDB")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 {
                     callback.onSuccessResponse(response);
+                    System.out.println("!!!!!Request!!!!");
                 }
             }
         }, error -> Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
