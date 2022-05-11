@@ -33,8 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public CurrencyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.currency_item,parent,false);
-        System.out.println("!!!");
-        System.out.println(view.findViewById(R.id.charCodeView));
         return new CurrencyViewHolder(view);
     }
 
@@ -43,16 +41,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Currency currency = currencies.get(position);
 
         String charCode = currency.getCharCode();
-        String nominal = currency.getNominal();
+        int nominal = currency.getNominal();
         String name = currency.getName();
-        String value = currency.getValue();
-        String previous = currency.getPrevious();
+        double value = currency.getValue();
+        double previous = currency.getPreviousValue();
 
         holder.charCodeView.setText(charCode);
-        holder.nominalView.setText(nominal);
+        holder.nominalView.setText(Integer.toString(nominal));
         holder.nameView.setText(name);
-        holder.valueView.setText(value);
-        holder.previousView.setText(previous);
+        holder.valueView.setText(Double.toString( value));
+        holder.previousView.setText(Double.toString( previous));
     }
 
     @Override
