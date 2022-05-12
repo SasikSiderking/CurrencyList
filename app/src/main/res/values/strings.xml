@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Currency List</string>
     <string name="header_text">Главная</string>
+    <string name="header2_text">Конвертор</string>
     <string name="header_search">Поиск</string>
     <string name="footer_graph">Графики</string>
     <string name="footer_calc">Расчёт</string>

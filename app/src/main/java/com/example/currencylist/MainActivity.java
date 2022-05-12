@@ -1,14 +1,14 @@
 package com.example.currencylist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.android.volley.Request;
@@ -16,11 +16,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -28,6 +28,9 @@ import Data.CurrencyAppDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerView;
+    private com.example.currencylist.RecyclerViewAdapter recyclerViewAdapter;
+    private static ArrayList<Currency> currencies;
     private RequestQueue requestQueue;
 
     private CurrencyAppDatabase currencyAppDatabase;//Here's our DB builder
@@ -37,21 +40,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavView);
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
-        NavigationUI.setupWithNavController(bottomNavigationView,navController);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.hasFixedSize();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ProgressBar progressBar = findViewById(R.id.progress_circular);
+        currencies = new ArrayList<>();
 
         String url = "https://www.cbr-xml-daily.ru/daily_json.js";
+
+        View overlay = findViewById(R.id.mainPage);
+        overlay.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
 
         currencyAppDatabase = Room.databaseBuilder(getApplicationContext(), CurrencyAppDatabase.class, "currencyDB")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
-        saveCurrencies(url,progressBar);
-        showNumberOfRecordsInDb();
+        saveCurrencies(url);
+        putCurrenciesInRecyclerView();
+//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        for (int i = 0; i<34;i++){
+            currencies.add(currencyAppDatabase.getCurrencyDAO().getAllCurrencies().get(i));
+//            System.out.println(currencies.get(i).getDate());
+        }
+//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     private void getCurrencies(String url, VolleyCallback callback) {
@@ -68,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    public void saveCurrencies(String url,ProgressBar progressBar) {
-        progressBar.setVisibility(View.VISIBLE);
+    public void saveCurrencies(String url) {
         getCurrencies(url, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject response) {
@@ -91,16 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
                         Currency currency = new Currency(id, charCode, nominal, name, value, previous, date);
                         currencyAppDatabase.getCurrencyDAO().addCurrency(currency);
+                        currencies.add(currency);
                     }
+                    recyclerViewAdapter = RecyclerViewAdapter.getInstance(MainActivity.this, currencies);
+                    recyclerView.setAdapter(recyclerViewAdapter);
                 } catch (JSONException jsonException) {
                     jsonException.printStackTrace();
                 }
-                progressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    public void showNumberOfRecordsInDb() {
+    public void putCurrenciesInRecyclerView() {
         int number = 0;
         ArrayList currencies = (ArrayList) currencyAppDatabase.getCurrencyDAO().getAllCurrencies();
         for (Object currency : currencies) {
@@ -108,4 +120,5 @@ public class MainActivity extends AppCompatActivity {
         }
         System.out.println("!!!!!!Number of records in DB!!!!!!"+number);
     }
+
 }

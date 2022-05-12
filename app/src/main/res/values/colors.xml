@@ -15,4 +15,6 @@
     <color name="footerBgColor">#F6F6F6</color>
     <color name="shadowColor">#F6F6F6</color>
     <color name="contentColor">#F6F6F6</color>
+    <color name="upColor">#04F404</color>
+    <color name="downColor">#F40404</color>
 </resources>
