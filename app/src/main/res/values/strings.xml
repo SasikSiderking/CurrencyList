@@ -5,4 +5,6 @@
     <string name="footer_graph">Графики</string>
     <string name="footer_calc">Расчёт</string>
     <string name="footer_gear">Настройки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
