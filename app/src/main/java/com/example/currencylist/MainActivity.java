@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         saveCurrencies(url);
         putCurrenciesInRecyclerView();
+//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        for (int i = 0; i<34;i++){
+            currencies.add(currencyAppDatabase.getCurrencyDAO().getAllCurrencies().get(i));
+//            System.out.println(currencies.get(i).getDate());
+        }
+//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     private void getCurrencies(String url, VolleyCallback callback) {
@@ -64,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 {
                     callback.onSuccessResponse(response);
-                    System.out.println("!!!!!Request!!!!");
                 }
             }
         }, error -> Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         double value = jsonCurrency.getDouble("Value");
                         double previous = jsonCurrency.getDouble("Previous");
 
-                        String date = response.getString("Date");
+                        String date = response.getString("Timestamp");
                         String id = jsonCurrency.getString("ID");
 
                         Currency currency = new Currency(id, charCode, nominal, name, value, previous, date);
