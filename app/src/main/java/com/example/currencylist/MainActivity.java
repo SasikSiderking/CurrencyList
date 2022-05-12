@@ -1,7 +1,9 @@
 package com.example.currencylist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -118,4 +120,5 @@ public class MainActivity extends AppCompatActivity {
         }
         System.out.println("!!!!!!Number of records in DB!!!!!!"+number);
     }
+
 }

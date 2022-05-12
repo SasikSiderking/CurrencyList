@@ -1,12 +1,16 @@
 package com.example.currencylist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new CurrencyViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull CurrencyViewHolder holder, int position) {
         Currency currency = currencies.get(position);
@@ -46,11 +51,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         double value = currency.getValue();
         double previous = currency.getPreviousValue();
 
-        holder.charCodeView.setText(charCode);
-        holder.nominalView.setText(Integer.toString(nominal));
+        holder.charCodeView.setText(charCode + " = ");
+        holder.nominalView.setText(Integer.toString(nominal) + " ");
 //        holder.nameView.setText(name);
-        holder.valueView.setText(Double.toString( value));
-        holder.previousView.setText(Double.toString( previous));
+        holder.valueView.setText(Double.toString( value) + " ₽ ");
+        holder.previousView.setText(String.format("%.2f", value - previous));
+
+        if (value - previous < 0) {
+            holder.previousView.setTextColor(Color.RED);
+        }
+        else {
+            holder.previousView.setTextColor(Color.GREEN);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, conversion_page.class);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
