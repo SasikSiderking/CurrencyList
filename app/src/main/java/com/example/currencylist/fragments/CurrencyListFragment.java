@@ -39,7 +39,6 @@ public class CurrencyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        System.out.println("!!!!!!!!){TTTTTTTTTTTTTGGsssssssssssssssssssssssssssGB? K?");
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

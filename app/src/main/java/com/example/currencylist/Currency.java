@@ -1,10 +1,19 @@
 package com.example.currencylist;
 
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+import android.os.Build;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Entity(tableName="currencies", primaryKeys = {"id","date"})
 public class Currency {
@@ -94,6 +103,12 @@ public class Currency {
     public String getDate() {
         return date;
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public double getNumDate(){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssXXX");
+//        Date date =
+//    }
 
     public void setDate(String date) {
         this.date = date;
