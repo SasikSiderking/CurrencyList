@@ -104,11 +104,14 @@ public class Currency {
         return date;
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public double getNumDate(){
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssXXX");
-//        Date date =
-//    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public float getNumDate(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssXXX");
+        LocalDate localDate = LocalDate.parse(date,formatter);
+        Date date = java.sql.Date.valueOf(String.valueOf(localDate));
+//        System.out.println(date.toString());
+        return (float) date.getTime();
+    }
 
     public void setDate(String date) {
         this.date = date;

@@ -26,8 +26,8 @@ public interface currencyDAO {
     @Query("select * from currencies")
     public List<Currency> getAllCurrencies();
 
-    @Query("select * from currencies where id ==:id ")
-    public Currency getCurrency(long id);
+    @Query("select * from currencies where id ==:id and date ==:date ")
+    public Currency getCurrency(String id,String date);
 
     @Query("select * from currencies where charCode ==:charCode")
     public List<Currency> getCurrencyData(String charCode);

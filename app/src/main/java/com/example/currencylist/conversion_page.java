@@ -24,21 +24,18 @@ public class conversion_page extends AppCompatActivity {
         Button btn1, btn2;
         TextInputLayout til1, til2;
 
-        btn1 = (Button) findViewById(R.id.button1);
-        btn2 = (Button) findViewById(R.id.button2);
-        til1 = (TextInputLayout) findViewById(R.id.textInputLayout);
-        til2 = (TextInputLayout) findViewById(R.id.textInputLayout3);
+        btn1 = findViewById(R.id.button1);
+        btn2 = findViewById(R.id.button2);
+        til1 = findViewById(R.id.textInputLayout);
+        til2 = findViewById(R.id.textInputLayout3);
 
         btn1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        double content = Double.parseDouble(til1.getEditText().getText().toString());
-                        double ratio = 65.79;
-                        double result = content/ratio;
-                        String loh = String.valueOf(result);
-                        til2.getEditText().setText(loh);
-                    }
+                view -> {
+                    double content = Double.parseDouble(til1.getEditText().getText().toString());
+                    double ratio = 65.79;
+                    double result = content/ratio;
+                    String loh = String.valueOf(result);
+                    til2.getEditText().setText(loh);
                 }
         );
         btn2.setOnClickListener(
