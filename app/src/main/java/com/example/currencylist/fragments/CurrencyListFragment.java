@@ -1,6 +1,9 @@
 package com.example.currencylist.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,16 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.currencylist.Currency;
 import com.example.currencylist.R;
 import com.example.currencylist.RecyclerViewAdapter;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import Data.CurrencyAppDatabase;
 
@@ -53,6 +51,7 @@ public class CurrencyListFragment extends Fragment {
                 currencies.add(currencyAppDatabase.getCurrencyDAO().getAllCurrencies().get(i));
             }
         }
+                currencyAppDatabase.close();
                 recyclerViewAdapter = RecyclerViewAdapter.getInstance(requireContext(), currencies);
                 recyclerView.setAdapter(recyclerViewAdapter);
     }
