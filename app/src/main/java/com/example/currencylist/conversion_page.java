@@ -1,72 +1,71 @@
 package com.example.currencylist;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.currencylist.fragments.MyXAxisValueFormatter;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Data.CurrencyAppDatabase;
 
 public class conversion_page extends AppCompatActivity {
 
+    String chosenCurrencyCharCode = getIntent().getStringExtra("charCode");
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Here's our DB builder
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_conversion_page);
-
-        Button btn1, btn2;
-        TextInputLayout til1, til2;
-
-        btn1 = findViewById(R.id.button1);
-        btn2 = findViewById(R.id.button2);
-        til1 = findViewById(R.id.textInputLayout);
-        til2 = findViewById(R.id.textInputLayout3);
-
-        btn1.setOnClickListener(
-                view -> {
-                    double content = Double.parseDouble(til1.getEditText().getText().toString());
-                    double ratio = 65.79;
-                    double result = content/ratio;
-                    String loh = String.valueOf(result);
-                    til2.getEditText().setText(loh);
-                }
-        );
-        btn2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        double content = Double.parseDouble(til2.getEditText().getText().toString());
-                        double ratio = 65.79;
-                        double result = content*ratio;
-                        String loh = String.valueOf(result);
-                        til1.getEditText().setText(loh);
-                    }
-                }
-        );
-    }
-
-    private static ArrayList<Currency> currencies;
-    private CurrencyAppDatabase currencyAppDatabase;//Here's our DB builder
-
-    public ArrayList<Currency> getCurrenciesFromDB (Context context){
-        ArrayList<Currency> currencies;
-        currencies = new ArrayList<>();
-
-        currencyAppDatabase = Room.databaseBuilder(context, CurrencyAppDatabase.class, "currencyDB")
+        CurrencyAppDatabase currencyAppDatabase = Room.databaseBuilder(getApplicationContext(), CurrencyAppDatabase.class, "currencyDB")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
-        if (currencyAppDatabase.getCurrencyDAO().getAllCurrencies() != null){
-            for (int i = 0; i<34;i++){
-                currencies.add(currencyAppDatabase.getCurrencyDAO().getAllCurrencies().get(i));
-            }
+        LineChart chart = findViewById(R.id.chart);
+
+        ArrayList<Currency> currencyData = (ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyData(chosenCurrencyCharCode);
+        for (Currency currency : currencyData) {
+            System.out.println(currency.getCharCode());
+            System.out.println(currency.getId());
+            System.out.println(currency.getDate());
+            System.out.println(currency.getNumDate());
         }
-        return currencies;
+//        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01235","2022-05-12T20:00:00+03:00"));
+        List<Entry> entries = new ArrayList<>();
+        for (Currency currency : currencyData) {
+            // turn your data into Entry objects
+            entries.add(new Entry(currency.getNumDate(), (float) currency.getValue() / currency.getNominal()));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, chosenCurrencyCharCode); // add entries to dataset
+        dataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.downColor));
+        LineData lineData = new LineData(dataSet);
+
+        chart.setNoDataText("No currencies?");
+        chart.setBorderColor(0);
+        chart.setAutoScaleMinMaxEnabled(true);
+
+
+        chart.getXAxis().setValueFormatter(new MyXAxisValueFormatter());
+        Description description = new Description();
+        description.setText("График курса валюты в рублях");
+        chart.setDescription(description);
+        chart.setData(lineData);
+        chart.invalidate(); // refresh
+        currencyAppDatabase.close();
     }
 }
