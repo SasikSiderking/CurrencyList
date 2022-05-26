@@ -57,7 +57,7 @@ public class Settings extends Fragment {
             System.out.println(currency.getDate());
             System.out.println(currency.getNumDate());
         }
-//        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01235","2022-05-12T15:00:00+03:00"));
+//        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01235","2022-05-12T20:00:00+03:00"));
         List<Entry> entries = new ArrayList<>();
         for (Currency currency : currencyData) {
             // turn your data into Entry objects

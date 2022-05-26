@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class CurrencyListFragment extends Fragment {
 
     private static ArrayList<Currency> currencies;
     private RecyclerView recyclerView;
+    private SearchView searchView;
     private com.example.currencylist.RecyclerViewAdapter recyclerViewAdapter;
     private CurrencyAppDatabase currencyAppDatabase;//Here's our DB builder
 
@@ -38,6 +40,22 @@ public class CurrencyListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        searchView = view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                recyclerViewAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recyclerViewAdapter.filter(newText);
+                return true;
+            }
+        });
+
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -54,5 +72,6 @@ public class CurrencyListFragment extends Fragment {
                 currencyAppDatabase.close();
                 recyclerViewAdapter = RecyclerViewAdapter.getInstance(requireContext(), currencies);
                 recyclerView.setAdapter(recyclerViewAdapter);
+        System.out.println("pehfoiewhfjsuuwwsf");
     }
 }

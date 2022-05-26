@@ -19,6 +19,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private ArrayList<Currency> currencies;
 
+    public void filter(String text) {
+        ArrayList<Currency> currenciesCopy = new ArrayList<>();
+        currenciesCopy.addAll(currencies);
+        currencies.clear();
+        if(text.isEmpty()){
+            currencies.addAll(currenciesCopy);
+        } else{
+            text = text.toLowerCase();
+            for(Currency item: currenciesCopy){
+                if(item.getName().toLowerCase().contains(text) || item.getCharCode().toLowerCase().contains(text)){
+                    currencies.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     private static RecyclerViewAdapter instance;
 
     private RecyclerViewAdapter(Context context, ArrayList<Currency> currencies){
@@ -68,7 +85,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, conversion_page.class);
+                intent.putExtra("charCode", charCode);
                 context.startActivity(intent);
+
             }
         });
 
