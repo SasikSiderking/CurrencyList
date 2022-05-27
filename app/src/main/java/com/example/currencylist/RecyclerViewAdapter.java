@@ -18,10 +18,10 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CurrencyViewHolder> {
     private Context context;
     private ArrayList<Currency> currencies;
+    ArrayList<Currency> currenciesCopy;
 
     public void filter(String text) {
-        ArrayList<Currency> currenciesCopy = new ArrayList<>();
-        currenciesCopy.addAll(currencies);
+//        currenciesCopy.addAll(currencies);
         currencies.clear();
         if(text.isEmpty()){
             currencies.addAll(currenciesCopy);
@@ -41,6 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private RecyclerViewAdapter(Context context, ArrayList<Currency> currencies){
         this.context = context;
         this.currencies = currencies;
+        this.currenciesCopy = new ArrayList<>(currencies);
     }
 
     public static RecyclerViewAdapter getInstance(Context context, ArrayList<Currency> currencies){
@@ -84,7 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, conversion_page.class);
+                Intent intent = new Intent(context, graphics.class);
                 intent.putExtra("charCode", charCode);
                 context.startActivity(intent);
 

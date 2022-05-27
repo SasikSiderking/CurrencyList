@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.currencylist.fragments.MyXAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -17,22 +14,23 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Data.CurrencyAppDatabase;
 
-public class conversion_page extends AppCompatActivity {
-
-    String chosenCurrencyCharCode = getIntent().getStringExtra("charCode");
+public class graphics extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Here's our DB builder
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_graphics);
+
+        String chosenCurrencyCharCode = getIntent().getStringExtra("charCode");
+
         CurrencyAppDatabase currencyAppDatabase = Room.databaseBuilder(getApplicationContext(), CurrencyAppDatabase.class, "currencyDB")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 

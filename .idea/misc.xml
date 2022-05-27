@@ -13,8 +13,9 @@
         <entry key="..\:/CurrencyList/app/src/main/res/layout/calculator.xml" value="0.17753623188405798" />
         <entry key="..\:/CurrencyList/app/src/main/res/layout/currency_item.xml" value="0.5408022130013831" />
         <entry key="..\:/CurrencyList/app/src/main/res/layout/fragment_chart.xml" value="0.1828125" />
-        <entry key="..\:/CurrencyList/app/src/main/res/layout/fragment_currency_list.xml" value="0.25" />
-        <entry key="..\:/CurrencyList/app/src/main/res/layout/fragment_settings.xml" value="0.17753623188405798" />
+        <entry key="..\:/CurrencyList/app/src/main/res/layout/fragment_currency_list.xml" value="0.33" />
+        <entry key="..\:/CurrencyList/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
+        <entry key="..\:/CurrencyList/app/src/main/res/layout/graphics_activity.xml" value="0.196875" />
         <entry key="..\:/CurrencyList/app/src/main/res/layout/row.xml" value="0.196875" />
         <entry key="..\:/CurrencyList/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.196875" />
         <entry key="..\:/CurrencyList/app/src/main/res/xml/searchable.xml" value="0.196875" />
