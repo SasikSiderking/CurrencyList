@@ -49,9 +49,9 @@ public class CurrencyListFragment extends Fragment {
         currencyAppDatabase = Room.databaseBuilder(requireContext(), CurrencyAppDatabase.class, "currencyDB")
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
-                if (currencyAppDatabase.getCurrencyDAO().getAllCurrencies() != null){
+                if (currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate() != null){
             for (int i = 0; i<34;i++){
-                currencies.add(currencyAppDatabase.getCurrencyDAO().getAllCurrencies().get(i));
+                currencies.add(currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().get(i));
             }
         }
                 recyclerViewAdapter = RecyclerViewAdapter.getInstance(requireContext(), currencies);

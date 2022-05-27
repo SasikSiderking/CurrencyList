@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         getCurrencies(url, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject response) {
+                System.out.println("Booooooooooooooooooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 try {
                     JSONObject valute = response.getJSONObject("Valute");
                     Iterator<String> x = valute.keys();

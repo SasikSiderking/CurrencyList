@@ -32,6 +32,6 @@ public interface currencyDAO {
     @Query("select * from currencies where charCode ==:charCode")
     public List<Currency> getCurrencyData(String charCode);
 
-    @Query("select * from currencies where date == (select max(date) from currencies)")
+    @Query("select * from currencies where date == (select max (date) from currencies)")
     public List<Currency> getCurrencyDataByDate();
 }

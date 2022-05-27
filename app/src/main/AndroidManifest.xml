@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CurrencyList">
         <activity
-            android:name=".conversion_page"
+            android:name=".graphics"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
