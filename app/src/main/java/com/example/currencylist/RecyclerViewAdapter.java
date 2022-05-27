@@ -68,9 +68,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         double value = currency.getValue();
         double previous = currency.getPreviousValue();
 
-        holder.charCodeView.setText(charCode + " = ");
+        holder.charCodeView.setText(" " + charCode + " ");
         holder.nominalView.setText(Integer.toString(nominal) + " ");
-//        holder.nameView.setText(name);
+        holder.nameView.setText(name + " = ");
         holder.valueView.setText(Double.toString( value) + " ₽ ");
         holder.previousView.setText(String.format("%.2f", value - previous));
 
@@ -102,7 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView charCodeView;
         TextView nominalView;
-//        TextView nameView;
+        TextView nameView;
         TextView valueView;
         TextView previousView;
 
@@ -110,7 +110,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             charCodeView = itemView.findViewById(R.id.charCodeView);
             nominalView = itemView.findViewById(R.id.nominalView);
-//            nameView = itemView.findViewById(R.id.nameView);
+            nameView = itemView.findViewById(R.id.nameView);
             valueView = itemView.findViewById(R.id.valueView);
             previousView = itemView.findViewById(R.id.previousView);
         }
