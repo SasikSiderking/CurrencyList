@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +40,9 @@ public class CurrencyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        System.out.println("!!!!!!!!){TTTTTTTTTTTTTGGsssssssssssssssssssssssssssGB? K?");
+
+        SearchView searchView = view.findViewById(R.id.search_view);
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -50,11 +53,27 @@ public class CurrencyListFragment extends Fragment {
                 .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
                 if (currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate() != null){
-            for (int i = 0; i<34;i++){
-                currencies.add(currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().get(i));
-            }
+//            for (int i = 0; i<34;i++){
+                currencies.addAll(currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
+//            }
         }
                 recyclerViewAdapter = RecyclerViewAdapter.getInstance(requireContext(), currencies);
                 recyclerView.setAdapter(recyclerViewAdapter);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        recyclerViewAdapter.filter(query);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        recyclerViewAdapter.filter(newText);
+                        return true;
+                    }
+                });
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.currencylist;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import android.os.Build;
