@@ -37,12 +37,12 @@ public class graphics extends AppCompatActivity {
         LineChart chart = findViewById(R.id.chart);
 
         ArrayList<Currency> currencyData = (ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyData(chosenCurrencyCharCode);
-        for (Currency currency : currencyData) {
-            System.out.println(currency.getCharCode());
-            System.out.println(currency.getId());
-            System.out.println(currency.getDate());
-            System.out.println(currency.getNumDate());
-        }
+//        for (Currency currency : currencyData) {
+//            System.out.println(currency.getCharCode());
+//            System.out.println(currency.getId());
+//            System.out.println(currency.getDate());
+//            System.out.println(currency.getNumDate());
+//        }
 //        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01235","2022-05-12T20:00:00+03:00"));
         List<Entry> entries = new ArrayList<>();
         for (Currency currency : currencyData) {

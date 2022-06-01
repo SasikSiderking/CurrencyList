@@ -16,12 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CurrencyViewHolder> {
-    private Context context;
-    private ArrayList<Currency> currencies;
+    private final ArrayList<Currency> currencies;
     ArrayList<Currency> currenciesCopy;
 
     public void filter(String text) {
-//        currenciesCopy.addAll(currencies);
         currencies.clear();
         if(text.isEmpty()){
             currencies.addAll(currenciesCopy);
@@ -38,15 +36,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static RecyclerViewAdapter instance;
 
-    private RecyclerViewAdapter(Context context, ArrayList<Currency> currencies){
-        this.context = context;
+    private RecyclerViewAdapter(ArrayList<Currency> currencies){
         this.currencies = currencies;
         this.currenciesCopy = new ArrayList<>(currencies);
     }
 
-    public static RecyclerViewAdapter getInstance(Context context, ArrayList<Currency> currencies){
+    public static RecyclerViewAdapter getInstance(ArrayList<Currency> currencies){
         if (instance == null){
-            instance = new RecyclerViewAdapter(context, currencies);
+            instance = new RecyclerViewAdapter(currencies);
         }
         return instance;
     }
@@ -54,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public CurrencyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.currency_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_item,parent,false);
         return new CurrencyViewHolder(view);
     }
 
@@ -85,9 +82,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, graphics.class);
+                Intent intent = new Intent(holder.itemView.getContext(), graphics.class);
                 intent.putExtra("charCode", charCode);
-                context.startActivity(intent);
+                holder.itemView.getContext().startActivity(intent);
 
             }
         });
@@ -115,5 +112,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             valueView = itemView.findViewById(R.id.valueView);
             previousView = itemView.findViewById(R.id.previousView);
         }
+    }
+
+    public void change(ArrayList<Currency> currencies) {
+        this.currencies.clear();
+        this.currencies.addAll(currencies);
+        notifyItemRangeChanged(0, getItemCount() - 1);
     }
 }

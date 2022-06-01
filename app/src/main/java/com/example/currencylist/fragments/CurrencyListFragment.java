@@ -1,6 +1,10 @@
 package com.example.currencylist.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,25 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.currencylist.Currency;
 import com.example.currencylist.R;
 import com.example.currencylist.RecyclerViewAdapter;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import Data.CurrencyAppDatabase;
+import Services.UpdateService;
 
 public class CurrencyListFragment extends Fragment {
 
-    private static ArrayList<Currency> currencies;
-    private RecyclerView recyclerView;
     private com.example.currencylist.RecyclerViewAdapter recyclerViewAdapter;
-    private CurrencyAppDatabase currencyAppDatabase;//Here's our DB builder
+
+   public static ArrayList<Currency> currencies = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,21 +42,19 @@ public class CurrencyListFragment extends Fragment {
 
         SearchView searchView = view.findViewById(R.id.search_view);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        currencies = new ArrayList<>();
+        if (currencies.isEmpty()){
+            CurrencyAppDatabase currencyAppDatabase = Room.databaseBuilder(requireContext(), CurrencyAppDatabase.class, "currencyDB")
+                    .allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        currencyAppDatabase = Room.databaseBuilder(requireContext(), CurrencyAppDatabase.class, "currencyDB")
-                .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
-
-                if (currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate() != null){
-//            for (int i = 0; i<34;i++){
+            if (currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate() != null){
                 currencies.addAll(currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
-//            }
+            }
         }
-                recyclerViewAdapter = RecyclerViewAdapter.getInstance(requireContext(), currencies);
+                recyclerViewAdapter = RecyclerViewAdapter.getInstance(currencies);
                 recyclerView.setAdapter(recyclerViewAdapter);
 
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -74,6 +71,4 @@ public class CurrencyListFragment extends Fragment {
                     }
                 });
     }
-
-
 }
