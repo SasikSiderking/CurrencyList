@@ -2,6 +2,7 @@ package com.example.currencylist.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,15 +47,19 @@ public class CurrencyListFragment extends Fragment {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (currencies.isEmpty()){
             CurrencyAppDatabase currencyAppDatabase = Room.databaseBuilder(requireContext(), CurrencyAppDatabase.class, "currencyDB")
                     .allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
             if (currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate() != null){
+                currencies.clear();
                 currencies.addAll(currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
+
             }
-        }
-                recyclerViewAdapter = RecyclerViewAdapter.getInstance(currencies);
+//                for (Currency currency : currencies) {
+//            System.out.println(currency.getCharCode());
+//        }
+                recyclerViewAdapter = new RecyclerViewAdapter((ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
+            RecyclerViewAdapter.instance = recyclerViewAdapter;
                 recyclerView.setAdapter(recyclerViewAdapter);
 
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

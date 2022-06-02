@@ -12,11 +12,14 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.currencylist.Currency;
+import com.example.currencylist.RecyclerViewAdapter;
 import com.example.currencylist.VolleyCallback;
+import com.example.currencylist.fragments.CurrencyListFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import Data.CurrencyAppDatabase;
@@ -53,9 +56,8 @@ public class NetworkWorker {
 
                     String date = response.getString("Date");
                     if(!currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().isEmpty() && lastSavedDate.equals("")){
+                        Log.e("Message","Second");
                         lastSavedDate = currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().get(0).getDate();
-                        if (date.equalsIgnoreCase(lastSavedDate))
-                            return;
                     }
                     else {
                         lastSavedDate = "2022-05-28T11:30:00+03:00";
@@ -64,6 +66,12 @@ public class NetworkWorker {
                         previousUrl = "https:" + response.getString("PreviousURL").replace("\\\\","/");
                         url = previousUrl;
                             saveCurrencies(context);
+                    }
+                    else{
+                        RecyclerViewAdapter.getInstance(CurrencyListFragment.currencies).change((ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
+                        Log.e("Message", "Second");
+                        currencyAppDatabase.close();
+                        return;
                     }
                     while (x.hasNext()) {
                         String key = x.next();
@@ -78,12 +86,8 @@ public class NetworkWorker {
 
                         Currency currency = new Currency(id, charCode, nominal, name, value, previous, date);
                         currencyAppDatabase.getCurrencyDAO().addCurrency(currency);
-                        if (currency.getCharCode().equals("AUD")){
-                            Log.e("AUD",currency.getDate());
-                        }
-
                     }
-                    currencyAppDatabase.close();
+                    Log.e("Message","First");
                 } catch (JSONException jsonException) {
                     jsonException.printStackTrace();
                 }

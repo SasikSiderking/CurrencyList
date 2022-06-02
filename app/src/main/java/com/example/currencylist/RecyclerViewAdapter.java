@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +32,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             }
         }
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, getItemCount() - 1);
     }
 
-    private static RecyclerViewAdapter instance;
+    public static RecyclerViewAdapter instance;
 
-    private RecyclerViewAdapter(ArrayList<Currency> currencies){
+    public RecyclerViewAdapter(ArrayList<Currency> currencies){
         this.currencies = currencies;
         this.currenciesCopy = new ArrayList<>(currencies);
     }
@@ -118,6 +119,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.currencies.clear();
         this.currencies.addAll(currencies);
         notifyItemRangeChanged(0, getItemCount() - 1);
+//        for (Currency currency : currencies) {
+//           Log.e("Warning",currency.getCharCode());
+//        }
 //        notifyDataSetChanged();
     }
 }

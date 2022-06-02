@@ -39,23 +39,15 @@ public class graphics extends AppCompatActivity {
         ArrayList<Currency> currencyData = (ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyData(chosenCurrencyCharCode);
         currencyAppDatabase.close();
         Collections.reverse(currencyData);
-        for (Currency currency : currencyData) {
-            System.out.println(currency.getCharCode());
-            System.out.println(currency.getId());
-            System.out.println(currency.getDate());
-            System.out.println(currency.getNumDate());
-            System.out.println(""+(float) currency.getValue() / currency.getNominal());
-        }
+//        for (Currency currency : currencyData) {
+//            System.out.println(currency.getCharCode());
+//            System.out.println(currency.getId());
+//            System.out.println(currency.getDate());
+//            System.out.println(currency.getNumDate());
+//            System.out.println(""+(float) currency.getValue() / currency.getNominal());
+//        }
 //        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01010","2022-06-02T11:30:00+03:00"));
         List<Entry> entries = new ArrayList<>();
-//        entries.add(new Entry((float)1.65367081E12,(float)47.3718));
-//        entries.add(new Entry((float)1.65392993E12,(float)45.3292));
-//        entries.add(new Entry((float)1.65401644E12,(float)44.2769));
-//        entries.add(new Entry((float)1.65410282E12,(float)44.0641));
-
-//        Currency curr = currencyData.get(0);
-//        entries.add(new Entry((float)1.65392993E12,(float)45.3292));
-//        entries.add(new Entry(curr.getNumDate(),(float)(curr.getValue()/curr.getNominal())));
         for (Currency currency : currencyData) {
             float numDate = currency.getNumDate();
             float value = (float) (currency.getValue()/currency.getNominal());

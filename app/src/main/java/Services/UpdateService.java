@@ -31,7 +31,7 @@ public class UpdateService extends Service {
                 new Runnable() {
                     @Override
                     public void run() {
-                        while(true){
+                        while (true) {
                             CurrencyAppDatabase currencyAppDatabase = Room.databaseBuilder(getApplicationContext(), CurrencyAppDatabase.class, "currencyDB")
                                     .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
                             NetworkWorker networkWorker = new NetworkWorker();
@@ -39,12 +39,9 @@ public class UpdateService extends Service {
                                 @Override
                                 public void run() {
                                     networkWorker.saveCurrencies(getApplicationContext());
-                                    RecyclerViewAdapter.getInstance(new ArrayList<>()).change((ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
-                                    Toast.makeText(getApplicationContext(), "Данные обновлены",Toast.LENGTH_SHORT).show();
-                                    currencyAppDatabase.close();
+                                    Toast.makeText(getApplicationContext(), "Данные обновлены", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            Log.e("Tag","update executed");
                             try {
                                 Thread.sleep(3600000);
 //                                Thread.sleep(10000);
