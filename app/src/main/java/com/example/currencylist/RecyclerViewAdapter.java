@@ -118,5 +118,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.currencies.clear();
         this.currencies.addAll(currencies);
         notifyItemRangeChanged(0, getItemCount() - 1);
+//        notifyDataSetChanged();
     }
 }

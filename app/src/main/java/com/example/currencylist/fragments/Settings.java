@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ public class Settings extends Fragment {
         button = view.findViewById(R.id.reload_button);
         button.setOnClickListener(view1 -> {
             networkWorker.saveCurrencies(getContext());
+            Toast.makeText(requireContext(), "Данные обновлены",Toast.LENGTH_SHORT).show();
             RecyclerViewAdapter.getInstance(new ArrayList<>()).change((ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate());
         });
     }

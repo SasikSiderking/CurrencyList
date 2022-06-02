@@ -8,7 +8,6 @@ import androidx.room.Room;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.example.currencylist.fragments.MyXAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -16,6 +15,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import Data.CurrencyAppDatabase;
@@ -25,7 +26,6 @@ public class graphics extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Here's our DB builder
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphics);
 
@@ -37,28 +37,43 @@ public class graphics extends AppCompatActivity {
         LineChart chart = findViewById(R.id.chart);
 
         ArrayList<Currency> currencyData = (ArrayList<Currency>) currencyAppDatabase.getCurrencyDAO().getCurrencyData(chosenCurrencyCharCode);
-//        for (Currency currency : currencyData) {
-//            System.out.println(currency.getCharCode());
-//            System.out.println(currency.getId());
-//            System.out.println(currency.getDate());
-//            System.out.println(currency.getNumDate());
-//        }
-//        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01235","2022-05-12T20:00:00+03:00"));
-        List<Entry> entries = new ArrayList<>();
+        currencyAppDatabase.close();
+        Collections.reverse(currencyData);
         for (Currency currency : currencyData) {
-            // turn your data into Entry objects
-            entries.add(new Entry(currency.getNumDate(), (float) currency.getValue() / currency.getNominal()));
+            System.out.println(currency.getCharCode());
+            System.out.println(currency.getId());
+            System.out.println(currency.getDate());
+            System.out.println(currency.getNumDate());
+            System.out.println(""+(float) currency.getValue() / currency.getNominal());
+        }
+//        currencyAppDatabase.getCurrencyDAO().deleteCurrency(currencyAppDatabase.getCurrencyDAO().getCurrency("R01010","2022-06-02T11:30:00+03:00"));
+        List<Entry> entries = new ArrayList<>();
+//        entries.add(new Entry((float)1.65367081E12,(float)47.3718));
+//        entries.add(new Entry((float)1.65392993E12,(float)45.3292));
+//        entries.add(new Entry((float)1.65401644E12,(float)44.2769));
+//        entries.add(new Entry((float)1.65410282E12,(float)44.0641));
+
+//        Currency curr = currencyData.get(0);
+//        entries.add(new Entry((float)1.65392993E12,(float)45.3292));
+//        entries.add(new Entry(curr.getNumDate(),(float)(curr.getValue()/curr.getNominal())));
+        for (Currency currency : currencyData) {
+            float numDate = currency.getNumDate();
+            float value = (float) (currency.getValue()/currency.getNominal());
+            entries.add(new Entry(numDate, value));
         }
         LineDataSet dataSet = new LineDataSet(entries, chosenCurrencyCharCode); // add entries to dataset
         dataSet.setColor(ContextCompat.getColor(getApplicationContext(), R.color.downColor));
         LineData lineData = new LineData(dataSet);
 
+        chart.setTouchEnabled(true);
         chart.setNoDataText("No currencies?");
         chart.setBorderColor(0);
-        chart.setAutoScaleMinMaxEnabled(true);
+        chart.setAutoScaleMinMaxEnabled(false);
 
 
-        chart.getXAxis().setValueFormatter(new MyXAxisValueFormatter());
+        chart.getXAxis().setValueFormatter(
+                new MyXAxisValueFormatter()
+        );
         Description description = new Description();
         description.setText("График курса валюты в рублях");
         chart.setDescription(description);

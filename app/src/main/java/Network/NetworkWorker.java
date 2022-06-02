@@ -1,6 +1,7 @@
 package Network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.room.Room;
@@ -21,8 +22,8 @@ import java.util.Iterator;
 import Data.CurrencyAppDatabase;
 
 public class NetworkWorker {
-
     String url = "https://www.cbr-xml-daily.ru/daily_json.js";
+    String lastSavedDate="";
     CurrencyAppDatabase currencyAppDatabase;
 
     private void getCurrencies(String url, Context context, VolleyCallback callback) {
@@ -42,7 +43,6 @@ public class NetworkWorker {
         getCurrencies(url, context, new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject response) {
-                Toast.makeText(context, "Данные обновлены",Toast.LENGTH_SHORT).show();
                 String previousUrl;
                 try {
                     JSONObject valute = response.getJSONObject("Valute");
@@ -52,17 +52,22 @@ public class NetworkWorker {
                             .allowMainThreadQueries().fallbackToDestructiveMigration().build();//Building DB
 
                     String date = response.getString("Date");
-                    String lastSavedDate = currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().get(0).getDate();
-                    if (!date.equals(lastSavedDate)){
-                        previousUrl = "https://" + response.getString("PreviousURL");
-                        url = previousUrl;
-                        saveCurrencies(context);
+                    if(!currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().isEmpty() && lastSavedDate.equals("")){
+                        lastSavedDate = currencyAppDatabase.getCurrencyDAO().getCurrencyDataByDate().get(0).getDate();
+                        if (date.equalsIgnoreCase(lastSavedDate))
+                            return;
                     }
-
+                    else {
+                        lastSavedDate = "2022-05-28T11:30:00+03:00";
+                    }
+                    if (!date.equalsIgnoreCase(lastSavedDate)){
+                        previousUrl = "https:" + response.getString("PreviousURL").replace("\\\\","/");
+                        url = previousUrl;
+                            saveCurrencies(context);
+                    }
                     while (x.hasNext()) {
                         String key = x.next();
                         JSONObject jsonCurrency = valute.getJSONObject(key);
-
 
                         String charCode = jsonCurrency.getString("CharCode");
                         int nominal = jsonCurrency.getInt("Nominal");
@@ -73,6 +78,9 @@ public class NetworkWorker {
 
                         Currency currency = new Currency(id, charCode, nominal, name, value, previous, date);
                         currencyAppDatabase.getCurrencyDAO().addCurrency(currency);
+                        if (currency.getCharCode().equals("AUD")){
+                            Log.e("AUD",currency.getDate());
+                        }
 
                     }
                     currencyAppDatabase.close();

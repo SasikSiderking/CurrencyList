@@ -1,4 +1,4 @@
-package com.example.currencylist.fragments;
+package com.example.currencylist;
 
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
@@ -17,7 +17,7 @@ public class MyXAxisValueFormatter extends IndexAxisValueFormatter {
 
         // Show time in local version
         Date timeMilliseconds = new Date(emissionsMilliSince1970Time);
-        DateFormat dateTimeFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+        DateFormat dateTimeFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 
         return dateTimeFormat.format(timeMilliseconds);
     }
